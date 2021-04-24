@@ -12,9 +12,10 @@ namespace ArrayBuilder
     /// Represents a strongly typed list of objects that allows retrieving the internal array.
     /// </summary>
     /// <remarks>
-    /// Call <see cref="Close"/> to retrieve a reference to the internal array.
+    /// Call <see cref="Close"/>, <see cref="CloseAndSlice()"/>, or <see cref="TrimAndClose"/> to retrieve a reference to the internal array.
     /// This will change the state from open to closed.
-    /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>, save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
+    /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>,
+    /// save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
     /// </remarks>
     /// <typeparam name="T"></typeparam>
     // Most of code taken from https://source.dot.net/#System.Private.CoreLib/List.cs.
@@ -69,7 +70,14 @@ namespace ArrayBuilder
                     Add(en.Current);
             }
         }
-
+        
+        /// <summary>
+        /// Gets or sets the total number of elements the internal data structure can hold without resizing.
+        /// </summary>
+        /// <param name="value">The number of elements that the <see cref="ArrayBuilder{T}"/> can contain before resizing is required.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><see cref="Capacity"/> is set to a value that is less than <see cref="Count"/>.</exception>
+        /// <exception cref="OutOfMemoryException">There is not enough memory available on the system.</exception>
+        /// <exception cref="ObjectDisposedException">If <see cref="IsClosed"/> or disposed.</exception>
         public int Capacity
         {
             get
@@ -110,7 +118,6 @@ namespace ArrayBuilder
         /// <summary>
         /// Indicates whether the instance is closed.
         /// </summary>
-        /// <exception cref="ObjectDisposedException">If the <see cref="ArrayBuilder{T}"/> is disposed.</exception>
         public bool IsClosed
         {
             get
@@ -255,8 +262,10 @@ namespace ArrayBuilder
             return Count - 1;
         }
         
+        /// <inheritdoc cref="List{T}.AddRange(IEnumerable{T}"/>
         public void AddRange(IEnumerable<T> collection) => InsertRange(_size, collection);
-        
+       
+        /// <inheritdoc cref="List{T}.BinarySearch(int, int, T, IComparer{T}"/>
         [Pure]
         public int BinarySearch(int index, int count, T item, IComparer<T>? comparer)
         {
@@ -270,11 +279,13 @@ namespace ArrayBuilder
  
             return Array.BinarySearch<T>(_items, index, count, item, comparer);
         }
- 
+        
+        /// <inheritdoc cref="List{T}.BinarySearch(T)"/>
         [Pure]
         public int BinarySearch(T item)
             => BinarySearch(0, Count, item, null);
- 
+        
+        /// <inheritdoc cref="List{T}.BinarySearch(T, IComparer{T}"/>
         [Pure]
         public int BinarySearch(T item, IComparer<T>? comparer)
             => BinarySearch(0, Count, item, comparer);
@@ -300,13 +311,12 @@ namespace ArrayBuilder
         }
 
         /// <summary>
-        /// Changes the state from open to closed.
+        /// Changes the state from open to closed, and returns the reference to the internal array.
         /// </summary>
-        /// <returns>A reference to the internal array.</returns>
+        /// <returns>The reference to the internal array.</returns>
         /// <remarks>
         /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>, save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
         /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="ArrayBuilder{T}"/> is closed or disposed.</exception>
         public T[] Close()
         {
             EnsureStateOpen();
@@ -375,6 +385,7 @@ namespace ArrayBuilder
             return false;
         }
 
+        /// <inheritdoc cref="List{T}.CopyTo(T[])"/>
         public void CopyTo(T[] array) => CopyTo(array, 0);
 
         void ICollection.CopyTo(Array array, int arrayIndex)
@@ -394,7 +405,8 @@ namespace ArrayBuilder
                 ThrowHelper.ThrowArgumentException_Argument_InvalidArrayType();
             }
         }
-
+        
+        /// <inheritdoc cref="List{T}.CopyTo(int, T[], int, int)"/>
         public void CopyTo(int index, T[] array, int arrayIndex, int count)
         {
             EnsureStateOpen();
@@ -423,11 +435,12 @@ namespace ArrayBuilder
         }
 
         /// <summary>
-        /// Ensures that the capacity of this list is at least the specified <paramref name="capacity"/>.
-        /// If the current capacity of the list is less than specified <paramref name="capacity"/>,
+        /// Ensures that the capacity of this <see cref="ArrayBuilder{T}"/> is at least the specified <paramref name="capacity"/>.
+        /// If the current capacity of the <see cref="ArrayBuilder{T}"/> is less than specified <paramref name="capacity"/>,
         /// the capacity is increased by continuously twice current capacity until it is at least the specified <paramref name="capacity"/>.
         /// </summary>
         /// <param name="capacity">The minimum capacity to ensure.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="capacity"/> is less than zero.</exception>
         public int EnsureCapacity(int capacity)
         {
             EnsureStateOpen();
@@ -499,6 +512,7 @@ namespace ArrayBuilder
             return -1;
         }
         
+        /// <inheritdoc cref="List{T}.IndexOf(T, int)"/>
         [Pure]
         public int IndexOf(T item, int index)
         {
@@ -508,6 +522,7 @@ namespace ArrayBuilder
             return Array.IndexOf(_items, item, index, _size - index);
         }
         
+        /// <inheritdoc cref="List{T}.IndexOf(T, int, int)"/>
         [Pure]
         public int IndexOf(T item, int index, int count)
         {
@@ -553,6 +568,7 @@ namespace ArrayBuilder
             }
         }
         
+        /// <inheritdoc cref="List{T}.InsertRange(int, IEnumerable{T})"/>
         public void InsertRange(int index, IEnumerable<T> collection)
         {
             EnsureStateOpen();
@@ -606,6 +622,7 @@ namespace ArrayBuilder
             _version++;
         }
         
+        /// <inheritdoc cref="List{T}.LastIndexOf(T)"/>
         [Pure]
         public int LastIndexOf(T item)
         {
@@ -619,6 +636,7 @@ namespace ArrayBuilder
             }
         }
  
+        /// <inheritdoc cref="List{T}.LastIndexOf(T, int)"/>
         [Pure]
         public int LastIndexOf(T item, int index)
         {
@@ -627,6 +645,7 @@ namespace ArrayBuilder
             return LastIndexOf(item, index, index + 1);
         }
  
+        /// <inheritdoc cref="List{T}.LastIndexOf(T, int, int)"/>
         [Pure]
         public int LastIndexOf(T item, int index, int count)
         {
@@ -698,7 +717,8 @@ namespace ArrayBuilder
             }
             _version++;
         }
-
+        
+        /// <inheritdoc cref="List{T}.RemoveRange(int, int)"/>
         public void RemoveRange(int index, int count)
         {
             EnsureStateOpen();
@@ -738,7 +758,6 @@ namespace ArrayBuilder
         /// <remarks>
         /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>, save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
         /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="ArrayBuilder{T}"/> is closed or disposed.</exception>
         public T[] TrimAndClose()
         {
             EnsureStateOpen();
@@ -753,6 +772,7 @@ namespace ArrayBuilder
             return trimmed;
         }
         
+        /// <inheritdoc cref="List{T}.TrimExcess()"/>
         public void TrimExcess()
         {
             EnsureStateOpen();
