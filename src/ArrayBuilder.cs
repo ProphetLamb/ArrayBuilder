@@ -315,25 +315,48 @@ namespace ArrayBuilder
             _items = null!;
             return internalArray;
         }
+
+        /// <summary>
+        /// Changes the state from open to closed. Return a <see cref="Span{T}"/> of a portion of the internal array, encompassing the virtual size of the list.
+        /// </summary>
+        /// <returns>A span of a portion of the internal array, encompassing the virtual size of the list.</returns>
+        /// <remarks>
+        /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>, save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
+        /// </remarks>
+        public Span<T> CloseAndSlice()
+        {
+            return CloseAndSlice(0, _size);
+        }
         
         /// <summary>
-        /// <see cref="Close"/>s the <see cref="ArrayBuilder{T}"/>, then <see cref="Dispose"/>s the instance.
+        /// Changes the state from open to closed. Returns a <see cref="Span{T}"/> of a portion of the internal array.
         /// </summary>
-        /// <returns>A reference to the internal array.</returns>
+        /// <param name="count">The number of items in the <see cref="Span{T}"/>.</param>
+        /// <returns>A span of a portion of the internal array, with specified <paramref name="count"/>.</returns>
         /// <remarks>
-        /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>.
+        /// Subsequent calls and assignments to publicly visible implicit and explicit members will throw <see cref="ObjectDisposedException"/>, save for <see cref="IDisposable"/> members and <see cref="IsClosed"/>.
         /// </remarks>
-        /// <exception cref="ObjectDisposedException">If the <see cref="ArrayBuilder{T}"/> is closed or disposed.</exception>
-        public T[] CloseAndDispose()
+        /// <exception cref="ArgumentException"><paramref name="count"/> is greater then <see cref="Count"/>.</exception>
+        public Span<T> CloseAndSlice(int count)
         {
-            try
+            return CloseAndSlice(0, count);
+        }
+        
+        /// <summary>
+        /// Changes the state from open to closed. Returns a <see cref="Span{T}"/> of a portion of the internal array.
+        /// </summary>
+        /// <param name="index">The index at which to begin the <see cref="Span{T}"/>.</param>
+        /// <param name="count">The number of items in the <see cref="Span{T}"/>.</param>
+        /// <returns>A span of a portion of the internal array, starting at the <paramref name="index"/>, with specified <paramref name="count"/>.</returns>
+        /// <exception cref="ArgumentException"><paramref name="index"/>, <paramref name="count"/>,
+        /// or <paramref name="index"/> + <paramref name="count"/> is not in the range of the <see cref="ArrayBuilder{T}"/>.</exception>
+        public Span<T> CloseAndSlice(int index, int count)
+        {
+            if (_size - index < count)
             {
-                return Close();
+                ThrowHelper.ThrowArgumentException("Argument_InvalidOffLen");
             }
-            finally
-            {
-                Dispose();
-            }
+            return Close().AsSpan(index, count);
         }
  
         public bool Contains(T item)
