@@ -108,6 +108,10 @@ namespace ArrayBuilder.Tests
             Assert.Throws<ObjectDisposedException>(() => _ = builder.BinarySearch("element"));
             Assert.Throws<ObjectDisposedException>(() => _ = builder.BinarySearch("element", StringComparer.Ordinal));
             Assert.Throws<ObjectDisposedException>(() => builder.Clear());
+            Assert.Throws<ObjectDisposedException>(() => _ = builder.Close());
+            Assert.Throws<ObjectDisposedException>(() => _ = builder.CloseAndSlice());
+            Assert.Throws<ObjectDisposedException>(() => _ = builder.CloseAndSlice(1));
+            Assert.Throws<ObjectDisposedException>(() => _ = builder.CloseAndSlice(1, 1));
             Assert.Throws<ObjectDisposedException>(() => _ = builder.Contains("element"));
             Assert.Throws<ObjectDisposedException>(() => builder.CopyTo(array));
             Assert.Throws<ObjectDisposedException>(() => builder.CopyTo(0, array, 0, 4));
@@ -122,6 +126,7 @@ namespace ArrayBuilder.Tests
             Assert.Throws<ObjectDisposedException>(() => builder.Remove("element"));
             Assert.Throws<ObjectDisposedException>(() => builder.RemoveAt(2));
             Assert.Throws<ObjectDisposedException>(() => builder.RemoveRange(0, 3));
+            Assert.Throws<ObjectDisposedException>(() => _ = builder.TrimAndClose());
             Assert.Throws<ObjectDisposedException>(() => builder.TrimExcess());
         }
     }
