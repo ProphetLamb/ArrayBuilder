@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace ArrayBuilder
 {
     /// <summary>
-    /// Represents a strongly typed list of objects that allows retrieval the internal array.
+    /// Represents a strongly typed list of objects that allows retrieving the internal array.
     /// </summary>
     /// <remarks>
     /// Call <see cref="Close"/> to retrieve a reference to the internal array.
@@ -707,6 +707,7 @@ namespace ArrayBuilder
                 }
             }
         }
+
         /// <summary>
         /// Trims the internal array to the virtual size, then <see cref="Close"/>s the instance.
         /// </summary>
