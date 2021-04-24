@@ -7,7 +7,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
 
     <!--Nuget package-->
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Prophet_Lamb</Authors>
     <Description>Lightweight strongly typed list implementation with similar API to System.Collection.Generic.List&lt;T&gt;. 
       Calling ArrayBuilder&lt;T&gt;.Close() will return the reference to the internal array, and prevent subsequent calls &amp; assignments to all public members.</Description>
