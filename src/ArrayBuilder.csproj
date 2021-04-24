@@ -1,20 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
-    <Version>0.1.1</Version>
-    <Authors>ProphetLamb</Authors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Nullable>enable</Nullable>
+    <TargetFramework>netstandard2.1</TargetFramework>
+
+    <!--Nuget package-->
+    <Version>0.1.1</Version>
+    <Authors>Prophet_Lamb</Authors>
     <Description>Lightweight strongly typed list implementation with similar API to System.Collection.Generic.List&lt;T&gt;. 
-Calling ArrayBuilder&lt;T&gt;.Close() will return the reference to the internal array, and prevent subsequent calls &amp; assignments to all public members.</Description>
-    <Copyright>Copyright (c) 2021</Copyright>
+      Calling ArrayBuilder&lt;T&gt;.Close() will return the reference to the internal array, and prevent subsequent calls &amp; assignments to all public members.</Description>
+    <Copyright>Prophet_Lamb (c) 2021</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ProphetLamb/ArrayBuilder</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ProphetLamb/ArrayBuilder</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>c#,collection,builder</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageTags>collection array builder</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
