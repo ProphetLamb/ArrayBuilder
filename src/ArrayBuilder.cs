@@ -362,6 +362,7 @@ namespace ArrayBuilder
         /// or <paramref name="index"/> + <paramref name="count"/> is not in the range of the <see cref="ArrayBuilder{T}"/>.</exception>
         public Span<T> CloseAndSlice(int index, int count)
         {
+            EnsureStateOpen();
             if (_size - index < count)
             {
                 ThrowHelper.ThrowArgumentException("Argument_InvalidOffLen");
