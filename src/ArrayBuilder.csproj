@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Version>0.1.1</Version>
+    <Authors>ProphetLamb</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Lightweight strongly typed list implementation with similar API to System.Collection.Generic.List&lt;T&gt;. 
+Calling ArrayBuilder&lt;T&gt;.Close() will return the reference to the internal array, and prevent subsequent calls &amp; assignments to all public members.</Description>
+    <Copyright>Copyright (c) 2021</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dawn.Guard" Version="1.12.0" />
+  </ItemGroup>
+
+</Project>
