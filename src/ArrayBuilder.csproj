@@ -18,10 +18,6 @@ Calling ArrayBuilder&lt;T&gt;.Close() will return the reference to the internal 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dawn.Guard" Version="1.12.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\icon.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
